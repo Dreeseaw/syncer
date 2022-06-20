@@ -1,6 +1,8 @@
 package syncer
 
 import (
+    "testing"
+
     "github.com/kelindar/column"
     "github.com/stretchr/testify/assert"
 )
@@ -21,5 +23,5 @@ func defaultTestColls(s *Syncer) error {
 func TestSyncer(t *testing.T) {
     s := NewSyncer()
     err := defaultTestColls(s)
-    assert.NotNil(err)
+    assert.Nil(t, err)
 }

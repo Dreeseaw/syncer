@@ -1,6 +1,9 @@
 package syncer
 
 import (
+    "fmt"
+    "errors"
+
     "github.com/kelindar/column"
     "github.com/kelindar/column/commit"
 )
@@ -20,6 +23,7 @@ func NewSyncer() *Syncer {
 // Append fulfills commit.Logger
 func (s *Syncer) Append(comm commit.Commit) error {
     s.stream <- comm.Clone()
+    return nil
 }
 
 func (s *Syncer) Assign(coll *column.Collection) error {
@@ -37,8 +41,9 @@ func (s *Syncer) Start() {
     // start grpc server
 
     go func(){
-        for change := s.stream {
+        for change := range s.stream {
             // send change to other nodes
+            fmt.Println(change)
         }
         return
     }()
