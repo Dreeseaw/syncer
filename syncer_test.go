@@ -21,7 +21,7 @@ func defaultTestColls(s *Syncer) error {
 }
 
 func TestSyncer(t *testing.T) {
-    s := NewSyncer()
+    s := New("test", "something")
     err := defaultTestColls(s)
     assert.Nil(t, err)
 }
