@@ -1,6 +1,7 @@
 package example
 
 import (
+    "fmt"
     "time"
 
     "github.com/Dreeseaw/syncer"
@@ -8,13 +9,13 @@ import (
 )
 
 func main() {
-    s := syncer.New("grpc-proxy:2379")
+    s := syncer.New("myNodeId", "grpc-proxy:2379")
 
     myColl := column.NewCollection(column.Options{
         Writer: s,
     })
 
-    if err := s.Assign(source); err != nil {
+    if err := s.Assign(myColl); err != nil {
         return err
     }
 
@@ -33,6 +34,7 @@ func main() {
     myColl.Insert(func (r column.Row) error {
         r.SetString("id", "bob")
         r.SetInt("cnt", 6)
+        return nil
     })
 
     // wait for sync to kick in
@@ -49,4 +51,5 @@ func main() {
             fmt.Printf("%v: %v\n", i, rowObj)
         })
     })
+    return
 }
