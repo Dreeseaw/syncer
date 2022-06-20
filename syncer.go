@@ -11,12 +11,20 @@ import (
 type Syncer struct {
     stream chan commit.Commit
     target *column.Collection 
+    backend Backend
 }
 
-func NewSyncer() *Syncer {
+func New(nodeId, proxyAddr string) *Syncer {
+    var b Backend
+    if nodeId == "test" {
+        b = NewMockBackend()
+    } else {
+        b = NewGrpcBackend(nodeId, proxyAddr)
+    }
     return &Syncer{
         stream: make(chan commit.Commit),
         target: nil,
+        backend: b,
     }
 }
 
@@ -35,14 +43,11 @@ func (s *Syncer) Assign(coll *column.Collection) error {
 }
 
 func (s *Syncer) Start() {
-    
-    // start grpc client
-
-    // start grpc server
 
     go func(){
         for change := range s.stream {
-            // send change to other nodes
+            // if change was a replica, discard
+            // else, send change to other nodes
             fmt.Println(change)
         }
         return

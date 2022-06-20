@@ -1,0 +1,48 @@
+// gRPC def for syncer
+//
+//
+syntax = "proto3";
+
+option go_package = "github.com/Dreeseaw/syncer/grpc";
+
+package Backend;
+
+service Backend {
+    
+    // Connection & Config
+    rpc Connect(NewClient) returns (Response) {}
+
+    rpc Transfer(Commit) returns (Response) {}
+}
+
+message NewClient {
+    string something = 1;
+}
+
+message Response {
+    string id = 1;
+    string txt = 2;
+}
+
+// column/commit/commit.go
+message Commit {
+    uint64 ID = 1;
+    uint32 Chunk = 2;
+    repeated Buffer Updates = 3;
+}
+
+// column/commit/buffer.go
+message Buffer {
+    int32 last = 1;
+    uint32 chunk = 2;
+    bytes buffer = 3;
+    repeated Header chunks = 4;
+    string Column = 5;
+}
+
+// column/commit/buffer.go
+message Header {
+    uint32 Chunk = 1;
+    uint32 Start = 2;
+    uint32 Value = 3;
+}
