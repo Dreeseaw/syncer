@@ -1,4 +1,4 @@
-package example
+package main
 
 import (
     "fmt"
@@ -9,14 +9,16 @@ import (
 )
 
 func main() {
+    fmt.Println("syncer trying to connect")
     s := syncer.New("myNodeId", "grpc-proxy:2379")
+    fmt.Println("created syncer")
 
     myColl := column.NewCollection(column.Options{
         Writer: s,
     })
 
     if err := s.Assign(myColl); err != nil {
-        return err
+        panic(err)
     }
 
     myColl.CreateColumn("id", column.ForString())
