@@ -6,7 +6,6 @@ services:
     ports:
       - 2379:2379
       - 2380:2380
-    volume: ${DATA_DIR}:/etcd-data
     command: [
       "etcd",
       "--name=etcd0",
