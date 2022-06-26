@@ -26,13 +26,9 @@ services:
       "grpc-proxy",
       "start",
       "--endpoints=etcd0:2379",
-      "--listen-addr=127.0.0.1:2379",
+      "--listen-addr=127.0.0.1:2381",
+      "--advertise-client-url=127.0.0.1:2381",
     ]
     ports:
-      - 2381:2379
+      - 2381:2381
       - 4001:4001
-  syncer-example:
-    depends_on:
-      - grpc-proxy
-    build: .
-    hostname: syncer

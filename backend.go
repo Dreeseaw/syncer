@@ -1,14 +1,15 @@
 package syncer
 
 import (
-    "fmt"
-    "context"
+    // "fmt"
+    "log"
+    // "context"
 
     // etcd & grpc
     "google.golang.org/grpc"
     "go.etcd.io/etcd/client/v3"
     resolver "go.etcd.io/etcd/client/v3/naming/resolver"
-    endpoints "go.etcd.io/etcd/client/v3/naming/endpoints"
+    // endpoints "go.etcd.io/etcd/client/v3/naming/endpoints"
     
     // "github.com/kelindar/column"
     // "github.com/kelindar/column/commit"
@@ -25,28 +26,11 @@ type GrpcBackend struct {
 func NewGrpcBackend(nodeId, proxyAddr string) *GrpcBackend {
 
     // connect to grpc-proxy
+    log.Println("connecting to etcd client")
     cli, etcdErr := clientv3.NewFromURL(proxyAddr)
     if etcdErr != nil {
         panic(etcdErr)
-    }
-    // defer cli.Close()
-    // TODO close func, keep done chan around
-
-    // add endpoint to grpc-proxy 
-    em, emErr := endpoints.NewManager(cli, "syncer/service")
-    if emErr != nil {
-        panic(emErr)
-    }
-
-    em.AddEndpoint(
-        context.TODO(),
-        fmt.Sprintf("syncer/service/%v", nodeId),
-        endpoints.Endpoint{Addr:nodeId},
-    )
-
-    // keep client map fresh
-    if syncErr := cli.Sync(context.Background()); syncErr != nil {
-        panic(syncErr)
+        return nil
     }
 
     // create grpc broadcasting client

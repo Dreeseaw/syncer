@@ -21,7 +21,24 @@ func defaultTestColls(s *Syncer) error {
 }
 
 func TestSyncer(t *testing.T) {
-    s := New("test", "something")
+    s := New("test", "localhost:2381")
     err := defaultTestColls(s)
     assert.Nil(t, err)
+}
+
+func TestCommitPipeline(t *testing.T) {
+    s := New("test", "localhost:2381")
+    err := defaultTestColls(s)
+
+    // insrt dummy row
+    s.Source.Insert(func (r column.Row) error {
+        r.SetAny("id", "bob")
+        r.SetAny("cnt", 2)
+    })
+
+    expected := <-s.stream
+    actual := fromCommitPb(toCommitPb(expected))
+
+    // compare comm & res
+    assert.Equal(t, expected, actual)
 }

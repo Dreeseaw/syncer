@@ -44,10 +44,13 @@ func (s *Syncer) Assign(coll *column.Collection) error {
 
 func (s *Syncer) Start() {
 
+    // also start a go func for reading a grpc change stream & 
+
     go func(){
         for change := range s.stream {
             // if change was a replica, discard
             // else, send change to other nodes
+            s.backend.Send(change)
             fmt.Println(change)
         }
         return

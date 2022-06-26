@@ -10,7 +10,7 @@ import (
 
 func main() {
     fmt.Println("syncer trying to connect")
-    s := syncer.New("myNodeId", "grpc-proxy:2379")
+    s := syncer.New("myNodeId", "grpc-proxy:2381")
     fmt.Println("created syncer")
 
     myColl := column.NewCollection(column.Options{

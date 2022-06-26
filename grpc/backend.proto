@@ -16,12 +16,12 @@ service Backend {
 }
 
 message NewClient {
-    string something = 1;
+    string Id = 1;
 }
 
 message Response {
-    string id = 1;
-    string txt = 2;
+    string Id = 1;
+    string Txt = 2;
 }
 
 // column/commit/commit.go
@@ -33,10 +33,10 @@ message Commit {
 
 // column/commit/buffer.go
 message Buffer {
-    int32 last = 1;
-    uint32 chunk = 2;
-    bytes buffer = 3;
-    repeated Header chunks = 4;
+    int32 Last = 1;
+    uint32 Chunk = 2;
+    bytes InnerBytes = 3;
+    repeated Header Chunks = 4;
     string Column = 5;
 }
 
